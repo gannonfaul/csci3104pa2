@@ -19,19 +19,29 @@ def free_time_intervals(interval_lst, T):
 
     for i in range(len(interval_lst)):
         lower = interval_lst[i][0]
-        higher = interval_lst[i][1] + 1
-        for j in range(lower, higher):
+        higher = interval_lst[i][1]
+        if lower <= T:
+            if time[lower] == 0 or time[lower] == 1:
+                time[lower] = 1
+            else:
+                time[lower] = 2
+        if higher <= T:
+            if time[higher] == 0 or time[higher] == 3:
+                time[higher] = 3
+            else:
+                time[higher] = 2
+        for j in range(lower + 1, higher):
             if j > T:
                 break
             else:
-                time[j] += 1
+                time[j] = 2
 
     free_intervals = []
 
     lower = 0
     higher = 0
     i = 0
-    while i < T - 1:
+    while i < T:
         if i == 0 and time[i] == 0:
             higher = 1
             while i < T - 1 and time[i + 1] == 0:
@@ -47,6 +57,11 @@ def free_time_intervals(interval_lst, T):
                 i += 1
             free_intervals.append((lower, lower + higher))
             i = lower + higher
+        elif time[i] == 3 and time[i+1] == 1:
+            lower = i
+            higher = i + 1
+            free_intervals.append((lower, higher))
+            i += 1
         i += 1
 
     return free_intervals
