@@ -15,13 +15,16 @@ import random
 
 def free_time_intervals(interval_lst, T):
     # First design the algorithm on pen/paper before you attempt this
-    time = [i for i in range(T+1)]
+    time = [0 for i in range(T+1)]
 
-    for i in range(len(interval_lst) - 1):
+    for i in range(len(interval_lst)):
         lower = interval_lst[i][0]
         higher = interval_lst[i][1] + 1
         for j in range(lower, higher):
-            time[j] += 1
+            if j > T:
+                break
+            else:
+                time[j] += 1
 
     free_intervals = []
 
@@ -29,10 +32,17 @@ def free_time_intervals(interval_lst, T):
     higher = 0
     i = 0
     while i < T - 1:
-        if time[i + 1] == i + 1:
+        if i == 0 and time[i] == 0:
+            higher = 1
+            while i < T - 1 and time[i + 1] == 0:
+                higher += 1
+                i += 1
+            free_intervals.append((lower, lower + higher))
+            i = lower + higher
+        elif time[i + 1] == 0:
             lower = i
             higher = 1
-            while i < T - 1 and time[i + 1] == i + 1:
+            while i < T - 1 and time[i + 1] == 0:
                 higher += 1
                 i += 1
             free_intervals.append((lower, lower + higher))
@@ -45,11 +55,14 @@ def max_logged_in(interval_lst,T):
     # First design the algorithm on pen/paper and solve a few examples.
     time = [0 for i in range(T+1)]
 
-    for i in range(len(interval_lst) - 1):
+    for i in range(len(interval_lst)):
         lower = interval_lst[i][0]
         higher = interval_lst[i][1] + 1
         for j in range(lower, higher):
-            time[j] += 1
+            if j > T:
+                break
+            else:
+                time[j] += 1
 
     max_time = 0
     max_users = 0
@@ -58,7 +71,7 @@ def max_logged_in(interval_lst,T):
             max_users = time[i]
             max_time = i
 
-    result = (max_time, max_users)
+    result = (max_users, max_time)
 
     return result
 
