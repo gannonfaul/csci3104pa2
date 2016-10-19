@@ -15,21 +15,31 @@ import random
 
 def free_time_intervals(interval_lst, T):
     # First design the algorithm on pen/paper before you attempt this
+    sorted_lst = sorted(interval_lst, key=lambda tup: tup[0])
+
+    i = 0
+    while i < len(sorted_lst):
+        if i + 1 < len(sorted_lst) and sorted_lst[i][1] >= sorted_lst[i + 1][0]:
+            if sorted_lst[i][1] < sorted_lst[i + 1][1]:
+                sorted_lst[i] = (sorted_lst[i][0], sorted_lst[i + 1][1])
+                del sorted_lst[i + 1]
+                i -= 1
+            else:
+                del sorted_lst[i + 1]
+                i -= 1
+        i += 1        
+
     time = [0 for i in range(T+1)]
 
-    for i in range(len(interval_lst)):
-        lower = interval_lst[i][0]
-        higher = interval_lst[i][1]
+    for i in range(len(sorted_lst)):
+        lower = sorted_lst[i][0]
+        higher = sorted_lst[i][1]
         if lower <= T:
-            if time[lower] == 0 or time[lower] == 1:
-                time[lower] = 1
-            else:
-                time[lower] = 2
+            time[lower] = 1
+        else:
+            break    
         if higher <= T:
-            if time[higher] == 0 or time[higher] == 3:
-                time[higher] = 3
-            else:
-                time[higher] = 2
+            time[higher] = 3
         for j in range(lower + 1, higher):
             if j > T:
                 break
