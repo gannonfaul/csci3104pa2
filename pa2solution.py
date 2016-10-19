@@ -3,23 +3,62 @@ from __future__ import print_function
 import sys
 import random
 
-# NAME:
-# STUDENT ID NUMBER:
+# NAME: Gannon Faul 
+# STUDENT ID NUMBER: 101713237
 # On my honor as a University of Colorado Boulder student, I have not received any unauthorized help.
 # I also realize that plagiarizing code defeats the purpose of an assignment like this and that the
 # instructors and TAs have very sophisticated approaches to finding such plagiarism that can defeat
 # things like renaming variables or rearranging statements.
 #
-# Acknowledged By: __ your name here __
+# Acknowledged By: Gannon Faul
 
 
 def free_time_intervals(interval_lst, T):
     # First design the algorithm on pen/paper before you attempt this
-    return None
+    time = [i for i in range(T+1)]
+
+    for i in range(len(interval_lst) - 1):
+        lower = interval_lst[i][0]
+        higher = interval_lst[i][1] + 1
+        for j in range(lower, higher):
+            time[j] += 1
+
+    free_intervals = []
+
+    lower = 0
+    higher = 0
+
+    for i in range(T + 1):
+        if time[i] == i:
+            lower = i
+            higher = 1
+            while i < T and time[i + 1] == i + 1:
+                higher += 1
+                i += 1
+            free_intervals.append((lower, lower + higher))
+
+    return free_intervals
 
 def max_logged_in(interval_lst,T):
     # First design the algorithm on pen/paper and solve a few examples.
-    return None
+    time = [0 for i in range(T+1)]
+
+    for i in range(len(interval_lst) - 1):
+        lower = interval_lst[i][0]
+        higher = interval_lst[i][1] + 1
+        for j in range(lower, higher):
+            time[j] += 1
+
+    max_time = 0
+    max_users = 0
+    for i in range(T + 1):
+        if time[i] > max_users:
+            max_users = time[i]
+            max_time = i
+
+    result = (max_time, max_users)
+
+    return result
 
 
 

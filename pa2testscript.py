@@ -2,7 +2,14 @@ from __future__ import print_function
 import pa2solution
 import sys
 
+def check_input_list(inp_list):
+    # we will check taht no one logs out at the same time when
+    # someone else logs in
+    login_times = set([i for (i,j) in inp_list])
+    return any([j in login_times for (i,j) in inp_list])
+
 def run_test_case(test_file_name):
+    corner_case_check = True # change this to false if you would like to check corner cases
     print('Testing ', test_file_name)
     T = None
     inp_list = []
@@ -54,7 +61,9 @@ def run_test_case(test_file_name):
             print('\t free_time_intervals either not implemented or does not return a list.')
             success = False
         user_max_occ = pa2solution.max_logged_in(inp_list, T)
-        if user_max_occ:
+        if (corner_case_check and check_input_list(inp_list)):
+            print('\t Test max_logged_in skipped because a corner case happens')
+        elif user_max_occ:
             if (user_max_occ == max_occ):
                 print('\t Test max_logged_in passed!')
             else:
