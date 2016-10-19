@@ -78,23 +78,25 @@ def free_time_intervals(interval_lst, T):
 
 def max_logged_in(interval_lst,T):
     # First design the algorithm on pen/paper and solve a few examples.
-    time = [0 for i in range(T+1)]
-
+    log_in_out_lst = []
     for i in range(len(interval_lst)):
-        lower = interval_lst[i][0]
-        higher = interval_lst[i][1] + 1
-        for j in range(lower, higher):
-            if j > T:
-                break
-            else:
-                time[j] += 1
+        if interval_lst[i][0] <= T:
+            log_in_out_lst.append((interval_lst[i][0], 0))
+        if interval_lst[i][1] <= T:    
+            log_in_out_lst.append((interval_lst[i][1], 1))
 
-    max_time = 0
+    log_in_out_lst.sort(key=lambda tup: tup[0])
+    curr_max_users = 0
     max_users = 0
-    for i in range(T + 1):
-        if time[i] > max_users:
-            max_users = time[i]
-            max_time = i
+    max_time = 0
+    for i in range(len(log_in_out_lst)):
+        if log_in_out_lst[i][1] == 0:
+            curr_max_users += 1
+            if curr_max_users > max_users:
+                max_users = curr_max_users
+                max_time = log_in_out_lst[i][0]
+        else:
+            curr_max_users -= 1
 
     result = (max_users, max_time)
 
