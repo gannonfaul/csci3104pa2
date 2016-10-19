@@ -27,15 +27,17 @@ def free_time_intervals(interval_lst, T):
 
     lower = 0
     higher = 0
-
-    for i in range(T + 1):
-        if time[i] == i:
+    i = 0
+    while i < T - 1:
+        if time[i + 1] == i + 1:
             lower = i
             higher = 1
-            while i < T and time[i + 1] == i + 1:
+            while i < T - 1 and time[i + 1] == i + 1:
                 higher += 1
                 i += 1
             free_intervals.append((lower, lower + higher))
+            i = lower + higher
+        i += 1
 
     return free_intervals
 
